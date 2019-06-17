@@ -17,7 +17,7 @@ import com.luv2code.springdemo.interfaces.FortuneService;
 @Component
 public class FileFortuneService implements FortuneService {
 
-	private String fileName = "C:\\develop\\webcourses\\udemy\\springHibernate\\worskspace\\spring-demo-annotations-exercises\\src\\sports-fortune.properties";
+	private String fileName = "C:\\develop\\workspaces\\springHibernate\\sports-fortune.properties";
 	private List<String> theFortunes;
 	
 	// create a random number generator

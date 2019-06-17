@@ -23,7 +23,7 @@ public class HelloSpringApp {
 		/**
 		 * EXERCISE INVERSION OF CONTROL
 		 */
-		Coach theSoccerCoach = context.getBean("mySoccerCoach", Coach.class);
+		Coach theSoccerCoach = context.getBean("myCricketCoach", Coach.class);
 		System.out.println(theSoccerCoach.getDailyWorkout());
 		
 		
