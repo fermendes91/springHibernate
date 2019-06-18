@@ -2,9 +2,12 @@ package com.luv2code.springdemo.mvc;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,6 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/customer")
 public class CustomerController {
 
+	// Esta annotation ficara responsavel por PRE-PROCESSAR todas as web requests vindas para a controller.
+	// para este cenario a ideia é evitar os espaços em brancos do customer.lastName ao processar o formulario.
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		// esta classe StringTrimmer é responsavel por tirar os espaços em branco iniciais e finais.
+		StringTrimmerEditor stringTimmerEditor = new StringTrimmerEditor(true);
+		
+		dataBinder.registerCustomEditor(String.class, stringTimmerEditor);
+	}
+	
 	@RequestMapping("/showForm")
 	public String showForm(Model theModel) {
 		theModel.addAttribute("customer", new Customer());
@@ -24,6 +37,10 @@ public class CustomerController {
 			BindingResult theBindingResult) {
 		
 		System.out.println("Last name: |" + theCustomer.getLastName() + "|" );
+		
+		System.out.println("Binding Result " + theBindingResult);
+		
+		System.out.println("\n\n\n\n\n");
 		
 		if(theBindingResult.hasErrors()) {
 			return "customer-form";
