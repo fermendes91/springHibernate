@@ -20,18 +20,18 @@ public class Instructor {
 
 	// annotate the class as an entity and map to db table
 	
-	// define the fields
+	// define fields
 	
 	// annotate the fields with db column names
 	
-	// ** set up mapping to InstructorDetail entity
+	//** set up mapping to InstructorDetail entity ** 
 	
-	// create constructors
+	// create constructor
 	
-	// generate getter/setter methods
+	// generate getters/setters methods
 	
-	// generate toString() method
-
+	// genereate toString() method
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
@@ -42,36 +42,25 @@ public class Instructor {
 	
 	@Column(name="last_name")
 	private String lastName;
-
+	
 	@Column(name="email")
 	private String email;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="instructor_detail_id")
+	@JoinColumn(name="instructor_detail_id") // this name was defined on the database in the foreign key created inside Instructor
 	private InstructorDetail instructorDetail;
 	
-	@OneToMany(mappedBy="instructor",
-			   cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-						 CascadeType.DETACH, CascadeType.REFRESH})
+	// do not apply cascade REMOVE
+	@OneToMany(mappedBy="instructor", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	private List<Course> courses;
+
 	
-	
-	public Instructor() {
-		
-	}
+	public Instructor() {}
 
 	public Instructor(String firstName, String lastName, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -105,13 +94,7 @@ public class Instructor {
 	public void setInstructorDetail(InstructorDetail instructorDetail) {
 		this.instructorDetail = instructorDetail;
 	}
-
-	@Override
-	public String toString() {
-		return "Instructor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", instructorDetail=" + instructorDetail + "]";
-	}
-
+	
 	public List<Course> getCourses() {
 		return courses;
 	}
@@ -120,28 +103,23 @@ public class Instructor {
 		this.courses = courses;
 	}
 	
-	// add convenience methods for bi-directional relationship
+	// ADD CONVENIENCE METHODS FOR BI-DIRECTIONAL RELATIONSHIP
 	
 	public void add(Course tempCourse) {
-		
 		if (courses == null) {
-			courses = new ArrayList<>();
+			courses = new ArrayList<Course>();
 		}
+		
+		tempCourse.setInstructor(this);
 		
 		courses.add(tempCourse);
 		
-		tempCourse.setInstructor(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Instructor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", instructorDetail=" + instructorDetail + "]";
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-

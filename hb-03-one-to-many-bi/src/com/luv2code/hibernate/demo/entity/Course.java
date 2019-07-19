@@ -18,9 +18,9 @@ public class Course {
 	
 	// define constructors
 	
-	// define getter setters
+	// define getters / setters
 	
-	// define tostring
+	// define toString
 	
 	// annotate fields
 	
@@ -32,14 +32,12 @@ public class Course {
 	@Column(name="title")
 	private String title;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-						 CascadeType.DETACH, CascadeType.REFRESH})
+	// insert all CascadeTypes exclude REMOVE, because if a instructor was deleted, all the courses linked with this instructor will be deleted as well.
+	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="instructor_id")
 	private Instructor instructor;
 	
-	public Course() {
-		
-	}
+	public Course() {}
 
 	public Course(String title) {
 		this.title = title;
@@ -73,6 +71,8 @@ public class Course {
 	public String toString() {
 		return "Course [id=" + id + ", title=" + title + "]";
 	}
+	
+	
 	
 	
 }
