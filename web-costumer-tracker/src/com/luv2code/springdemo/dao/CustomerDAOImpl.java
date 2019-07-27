@@ -2,8 +2,6 @@ package com.luv2code.springdemo.dao;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -20,20 +18,57 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional // transactional will take care about begin and commit transactions... we just need to implement.
 	public List<Customer> getCustomers() {
 		
 		// get the current hibernate session
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		// create a query
-		Query<Customer> query = currentSession.createQuery("from Customer", Customer.class);
+		// create a query ... sort by the last name
+		Query<Customer> query = currentSession.createQuery("from Customer c order by c.lastName", Customer.class);
 		
 		// execute query and get result list
 		List<Customer> customers = query.getResultList();
 		
 		// return the results
 		return customers;
+	}
+
+	@Override
+	public void saveCustomer(Customer customer) {
+		
+		// get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		// save/update the customer
+		currentSession.saveOrUpdate(customer);
+		
+	}
+
+	@Override
+	public Customer getCustomer(int id) {
+
+		// get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		// retrieve/read from database using the primary key
+		Customer customer = currentSession.get(Customer.class, id);
+		
+		return customer;
+
+	}
+
+	@Override
+	public void deleteCustomer(int id) {
+		
+		// get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		// delete object with prmary key
+		Query query = currentSession.createQuery("delete from Customer where id=:customerId");
+		query.setParameter("customerId", id);
+		
+		// executeUpdate -> generic hibernate method to executeh created HQL.
+		query.executeUpdate();
 	}
 
 
