@@ -1,13 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+	<modelVersion>5.0.0</modelVersion>
 	<groupId>com.luv2code</groupId>
 	<artifactId>mycoolwebapp</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
 	<name>mycoolwebapp Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Default java version is 1.5, so we are changing that -->
+		<maven.compiler.target>1.8</maven.compiler.target> <!-- Generate class files that will work on given Java version -->
+		<maven.compiler.source>1.8</maven.compiler.source> <!-- The java version of source accepted -->
+	</properties>
+
 	<dependencies>
 
 		<!-- We need to add the Servlet API dependency: javax.servlet-api -->
@@ -31,7 +40,25 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Add support for Atlassian Mail (Another repository instead of maven-central) -->
+		<dependency>
+			<groupId>com.atlassian.mail</groupId>
+			<artifactId>atlassian-mail</artifactId>
+			<version>4.0.5</version>
+		</dependency>
+	
 	</dependencies>
+	
+	<!-- Configure another repository to download another projects -->
+	<repositories>
+		<repository>
+			<id>atlassian</id>
+			<name>Atlassian Repository</name>
+			<url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+		</repository>
+	</repositories>
+	
 	<build>
 		<finalName>mycoolwebapp</finalName>
 	</build>
